@@ -4,7 +4,7 @@
 typedef  struct {
   uint8_t status;
   uint32_t time;
-  uint8_t grade;
+  float grade;
   uint8_t gradeMax;
   char *description;
 } point;
@@ -14,7 +14,7 @@ typedef struct {
   uint32_t npoints;
   point *points;
   uint32_t time;
-  uint8_t grade;
+  float grade;
   uint8_t gradeMax;
   uint8_t progress;
 } entry;

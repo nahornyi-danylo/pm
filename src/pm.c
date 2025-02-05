@@ -20,7 +20,7 @@ int pmLoad(const char *filename){
   }
   fread(&versionM, 1, 1, fp);
   fread(&versionm, 1, 1, fp);
-  if(versionm != 0 || versionM != 0){
+  if(versionm != 1 || versionM != 0){
     puts("version missmatch");
     fclose(fp);
     return -2;
@@ -48,7 +48,7 @@ int pmLoad(const char *filename){
     for(int j = 0; j<instance.entries[i].npoints; j++){
       fread(&instance.entries[i].points[j].status, 1, 1, fp);
       fread(&instance.entries[i].points[j].time, 4, 1, fp);
-      fread(&instance.entries[i].points[j].grade, 1, 1, fp);
+      fread(&instance.entries[i].points[j].grade, 4, 1, fp);
       fread(&instance.entries[i].points[j].gradeMax, 1, 1, fp);
       instance.entries[i].points[j].description = malloc(MAX_NAMELEN);
       if(!instance.entries[i].points[j].description){
@@ -59,7 +59,7 @@ int pmLoad(const char *filename){
       enul(instance.entries[i].points[j].description);
     }
     fread(&instance.entries[i].time, 4, 1, fp);
-    fread(&instance.entries[i].grade, 1, 1, fp);
+    fread(&instance.entries[i].grade, 4, 1, fp);
     fread(&instance.entries[i].gradeMax, 1, 1, fp);
     fread(&instance.entries[i].progress, 1, 1, fp);
   }
@@ -75,7 +75,7 @@ int pmSave(const char *filename){
   fputc(0x70, fp);
   fputc(0x6d, fp);
   fputc(0, fp);
-  fputc(0, fp);
+  fputc(1, fp);
   fwrite(&instance.n, 4, 1, fp);
   for(int i = 0; i<instance.n; i++){
     fputs(instance.entries[i].name, fp);
@@ -84,13 +84,13 @@ int pmSave(const char *filename){
     for(int j = 0; j<instance.entries[i].npoints; j++){
       fwrite(&instance.entries[i].points[j].status, 1, 1, fp);
       fwrite(&instance.entries[i].points[j].time, 4, 1, fp);
-      fwrite(&instance.entries[i].points[j].grade, 1, 1, fp);
+      fwrite(&instance.entries[i].points[j].grade, 4, 1, fp);
       fwrite(&instance.entries[i].points[j].gradeMax, 1, 1, fp);
       fputs(instance.entries[i].points[j].description, fp);
       fputc('\n', fp);
     }
     fwrite(&instance.entries[i].time, 4, 1, fp);
-    fwrite(&instance.entries[i].grade, 1, 1, fp);
+    fwrite(&instance.entries[i].grade, 4, 1, fp);
     fwrite(&instance.entries[i].gradeMax, 1, 1, fp);
     fwrite(&instance.entries[i].progress, 1, 1, fp);
   }

@@ -96,6 +96,7 @@ ret:
 
 void gradePoint(int i){
   int g = 0;
+  float gf = 0;
   move(LINES-1, 0);
   addstr("enter:");
   echo();
@@ -107,8 +108,8 @@ void gradePoint(int i){
     instance.entries[selector].points[i].gradeMax = g;
   }
   else {
-    sscanf(s, "%d", &g);
-    instance.entries[selector].points[i].grade = g<=instance.entries[selector].points[i].gradeMax?g:0;
+    sscanf(s, "%f", &gf);
+    instance.entries[selector].points[i].grade = gf<=instance.entries[selector].points[i].gradeMax?gf:0;
   }
   ensureGrade();
 ret:
@@ -147,7 +148,7 @@ void enterEntry(){
       addnstr(instance.entries[selector].points[i].description, COLS/3);
       move(i, COLS/3+2);
       printw("%d", instance.entries[selector].points[i].status);
-      printw(" %d/%d", instance.entries[selector].points[i].grade, instance.entries[selector].points[i].gradeMax);
+      printw(" %.1f/%d", instance.entries[selector].points[i].grade, instance.entries[selector].points[i].gradeMax);
       printw(" %d:%d", instance.entries[selector].points[i].time/60, instance.entries[selector].points[i].time%60);
     }
     c = getch();
@@ -200,10 +201,11 @@ void newEntry(){
 
 int main(int argc, char **argv){
   if(argc != 2){
-    puts("provide a filename or fuck off");
+    puts("provide a single filename");
     return -1;
   }
-  pmLoad(argv[1]);
+  int check = pmLoad(argv[1]);
+  if(check) return -1;
   pmSave("backup.pm");
   setlocale(LC_ALL, "");
   initscr();
@@ -240,7 +242,7 @@ int main(int argc, char **argv){
         }
         else addch(' ');
       }
-      printw("%d/%d", instance.entries[i].grade, instance.entries[i].gradeMax);
+      printw("%.1f/%d", instance.entries[i].grade, instance.entries[i].gradeMax);
       move(i, COLS*7/9);
       printw("%d", instance.entries[i].progress);
       move(i, COLS*8/9);
