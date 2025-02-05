@@ -205,7 +205,10 @@ int main(int argc, char **argv){
     return -1;
   }
   int check = pmLoad(argv[1]);
-  if(check) return -1;
+  if(check < 0){
+    puts("failed to load");
+    return -1;
+  }
   pmSave("backup.pm");
   setlocale(LC_ALL, "");
   initscr();

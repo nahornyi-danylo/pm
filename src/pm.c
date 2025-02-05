@@ -8,7 +8,7 @@ pm instance = {0};
 
 int pmLoad(const char *filename){
   FILE *fp = fopen(filename, "rb");
-  if(!fp) return -1;
+  if(!fp) return 1;
   uint32_t sign = 0;
   uint8_t versionM = 0;
   uint8_t versionm = 0;
