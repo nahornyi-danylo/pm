@@ -4,12 +4,25 @@
 #include <stdio.h>
 #include <time.h>
 #include "pm.h"
+#include "stack.h"
 
 int selector = 0;
 time_t t1;
 extern pm instance;
 
+inline int numOfBytes(char c){
+  if (!(c & 0b1000000)) return 1;
+  if (c & 0b1100000) return 2;
+  if (c & 0b11100000) return 3;
+  if (c & 0b11110000) return 4;
+  return -1;
+}
+
 int getnstrbreakonesc(char *s, int n){
+  stack st;
+  stackInit(&st);
+  int rem;
+  int ucode = 0;
   char c;
   int x, y;
   for(int i = 0; i<n; i++){
@@ -21,22 +34,42 @@ int getnstrbreakonesc(char *s, int n){
         s[i] = '\0';
         return 0;
       case 127:
+        getyx(stdscr, y, x);
         if(i>0){
-          i-=2;
-          s[i+1] = '\0';
-          getyx(stdscr, y, x);
-          mvdelch(y, x - 1); 
-          mvdelch(y, x - 2);
-          mvdelch(y, x - 3);
-          refresh();
+          if(st.top){
+            rem = pop(&st);  
+            mvdelch(y, --x); 
+            mvdelch(y, --x);
+            mvdelch(y, --x); 
+            for(; i>rem; i--);
+            s[i+1] = '\0';
+            i--;
+            refresh();
+          }
+        }
+        else {
+          mvdelch(y, --x); 
+          mvdelch(y, --x); 
+          i--;
         }
         break;
       default:
+        if(c<0){
+          if(!ucode){
+            ucode = numOfBytes(c);
+            push(i, &st);
+          }
+          ucode--;
+        }
+        else {
+          push(i, &st);
+        }
         s[i] = c;
         break;
     }
   }
   s[n-1] = '\0';
+  free(st.s);
   return 0;
 }
 
