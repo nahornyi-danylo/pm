@@ -93,6 +93,7 @@ again: c = getch();
     case 's':
       if(i!=-1) instance.entries[selector].points[i].time += m;      
       instance.entries[selector].time += m;      
+      refresh();
       break;
     case 'c':
       break;
@@ -278,11 +279,11 @@ int main(int argc, char **argv){
         }
         else addch(' ');
       }
-      printw("%.1f/%d", instance.entries[i].grade, instance.entries[i].gradeMax);
+      printw("|%.1f/%d", instance.entries[i].grade, instance.entries[i].gradeMax);
       move(i, COLS*7/9);
-      printw("%d", instance.entries[i].progress);
+      printw("|%d", instance.entries[i].progress);
       move(i, COLS*8/9);
-      printw("%d:%d", instance.entries[i].time/60, instance.entries[i].time%60);
+      printw("|%d:%d", instance.entries[i].time/60, instance.entries[i].time%60);
     }
     c = getch();
     switch(c){
