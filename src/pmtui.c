@@ -255,6 +255,8 @@ int main(int argc, char **argv){
   init_pair(1, 0, 196);
   init_pair(2, 0, 46);
   init_pair(3, 0, 190);
+  init_pair(4, 0, 39);
+  init_pair(5, 0, 202);
   noecho();
   int c;
   do{
