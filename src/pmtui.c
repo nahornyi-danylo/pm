@@ -163,6 +163,19 @@ void newPoint(){
   noecho();
 }
 
+void ensureProgress(){
+  int good;
+  for(int i = 0; i<instance.n; i++){
+    good = 0;
+    for(int j = 0; j<instance.entries[i].npoints; j++){
+      if(instance.entries[i].points[j].status == 1){
+        good++;
+      }
+    }
+    instance.entries[i].progress = (float)good/instance.entries[i].npoints * 100;
+  }
+}
+
 void enterEntry(){
   clear();
   move(0, 0);
@@ -217,6 +230,7 @@ void enterEntry(){
         break;
     }
   } while (c!='q');
+  ensureProgress();
 }
 
 
@@ -283,7 +297,7 @@ int main(int argc, char **argv){
       }
       printw("|%.1f/%d", instance.entries[i].grade, instance.entries[i].gradeMax);
       move(i, COLS*7/9);
-      printw("|%d", instance.entries[i].progress);
+      printw("|%d%%", instance.entries[i].progress);
       move(i, COLS*8/9);
       printw("|%d:%d", instance.entries[i].time/60, instance.entries[i].time%60);
     }
