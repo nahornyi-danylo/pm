@@ -196,7 +196,7 @@ void enterEntry(){
       move(i, COLS/3+2);
       printw("%d", instance.entries[selector].points[i].status);
       printw(" %.1f/%d", instance.entries[selector].points[i].grade, instance.entries[selector].points[i].gradeMax);
-      printw(" %d:%d", instance.entries[selector].points[i].time/60, instance.entries[selector].points[i].time%60);
+      printw(" %d:%02d", instance.entries[selector].points[i].time/60, instance.entries[selector].points[i].time%60);
     }
     c = getch();
     switch(c){
@@ -299,7 +299,7 @@ int main(int argc, char **argv){
       move(i, COLS*7/9);
       printw("|%d%%", instance.entries[i].progress);
       move(i, COLS*8/9);
-      printw("|%d:%d", instance.entries[i].time/60, instance.entries[i].time%60);
+      printw("|%d:%02d", instance.entries[i].time/60, instance.entries[i].time%60);
     }
     c = getch();
     switch(c){
